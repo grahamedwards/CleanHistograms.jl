@@ -118,7 +118,7 @@ end
 
 """
 
-    cleanhist(x; nbins=32, scooch_nbins=2)
+    cleanhist(x; bins=32, scooch=2)
 
 Calculates a histogram with extra (0 count) bins to buffer the edges and make it look nice and clean. 🧼
 
@@ -132,7 +132,7 @@ function cleanhist(x::AbstractArray{T}; bins::Int=32, scooch::Int=2) where T<: N
     x_scooch = scooch*(xmax-xmin)/(bins)
     binedges = LinRange(xmin-x_scooch, xmax+x_scooch, bins+2*scooch+1)
     y = quickhist(x, binedges) ./ (length(x)*step(binedges))
-    return (x=SolarChem.binweave(binedges), y=SolarChem.interleave(y))
+    return (x=binweave(binedges), y=interleave(y))
 end
 
 end
