@@ -1,11 +1,11 @@
 module CleanHistograms
 
-export cleanhist, 
+export cleanhist
 
 """
-```julia
-interleave(a)
-```
+
+    interleave(a)
+
 Interleave the sequential values of a vector `a` so that each value occurs twice in a vector of `length(a)*2`
 
 ### Example
@@ -27,10 +27,11 @@ function interleave(a::AbstractVector{T}) where T
 end
 
 """
-```julia
-interleave!(c,a)
-```
+
+    interleave!(c,a)
+
 In-place version of [`interleave`](@ref), that fills `c` with pairs of each index in `a`.
+
 """
 function interleave!(c::Vector{T}, a::AbstractVector{T}) where T
     @assert length(c) == 2*length(a)
@@ -45,9 +46,8 @@ end
 
 """
 
-```julia
-binweave(a)
-```
+    binweave(a)
+
 
 Interleave the sequential values of `a` (`<:AbstractVector`) using the first and last values only once. To be used with [`interleave`](@ref) to make plotting-ready histograms.
 
@@ -70,9 +70,9 @@ end
 
 
 """
-```julia
-binweave!(c,a)
-```
+
+    binweave!(c,a)
+
 In-place version of [`binweave`](@ref), that overwrites `c` with woven bin edges.
 
 """
@@ -107,9 +107,8 @@ end
 
 """
 
-```julia
-cleanhist(x; nbins=32, scooch_nbins=2)
-```
+    cleanhist(x; nbins=32, scooch_nbins=2)
+
 Calculates a histogram with extra (0 count) bins to buffer the edges and make it look nice and clean. 🧼
 
 Optionally specify the number of histogram `bins` (default: `2⁵` bins) and the number of buffering bins `scooch`. (Total bins = `nbins + scoochbins`)
