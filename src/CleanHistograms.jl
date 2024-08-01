@@ -94,15 +94,26 @@ end
 Quickly calculate histogram counts from collection `x` from an Abstract Range of `binedges`. Note that any values in `x` that fall outside of `binedges` will not be counted. Use at your own risk!
 
 """
-function quickhist(x::AbstractArray, binedges::AbstractRange)
-    h = zeros(Int, length(binedges)-1)
+quickhist(x::AbstractArray, binedges::AbstractRange) = quickhist!(Vector{Integer}(undef,length(binedges)-1),x,binedges)
+
+
+"""
+
+    quickhist!(A, x, binedges)
+
+In-place form of [`quickhist`](@ref) that overwrites `A`, which must have a length equal `binedges`-1.
+
+"""
+function quickhist!(A::AbstractArray{Integer}, x::AbstractArray{T}, binedges::AbstractRange) where T<:Number
+    @assert length(A) === length(binedges)-1 
+    A .= 0
     binmin, binstep, binmax = first(binedges), step(binedges), last(binedges)
     @inbounds for i in eachindex(x)
         xi = x[i]
         binmin < xi <= binmax  || continue
-        h[1+floor(Int, (xi - binmin)/binstep)] += 1
+        A[1+floor(Int, (xi - binmin)/binstep)] += 1
     end
-    h
+    A
 end
 
 """
@@ -116,7 +127,7 @@ Optionally specify the number of histogram `bins` (default: `2⁵` bins) and the
 Returns a `NamedTuple` with `x` and `y` values of histogram.
 
 """
-function cleanhist(x::Vector{<:Number}; bins::Int=32, scooch::Int=2)
+function cleanhist(x::Array{T}; bins::Int=32, scooch::Int=2) where T<: Number
     xmin,xmax = extrema(x)
     x_scooch = scooch*(xmax-xmin)/(bins)
     binedges = LinRange(xmin-x_scooch, xmax+x_scooch, bins+2*scooch+1)
