@@ -127,7 +127,7 @@ Optionally specify the number of histogram `bins` (default: `2⁵` bins) and the
 Returns a `NamedTuple` with `x` and `y` values of histogram.
 
 """
-function cleanhist(x::Array{T}; bins::Int=32, scooch::Int=2) where T<: Number
+function cleanhist(x::AbstractArray{T}; bins::Int=32, scooch::Int=2) where T<: Number
     xmin,xmax = extrema(x)
     x_scooch = scooch*(xmax-xmin)/(bins)
     binedges = LinRange(xmin-x_scooch, xmax+x_scooch, bins+2*scooch+1)
